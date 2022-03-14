@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+html lang="en"
+    head
+        meta charset="UTF-8"/
+        meta http-equiv="X-UA-Compatible" content="IE=edge"/
+        meta name="viewport" content="width=device-width, initial-scale=1.0"/
+        link rel="stylesheet" href="/css/stylee.css"/
+        title Document
+    body 
+        h1 väldigt kool simulation
+        p Evolution är ett samlingsnamn för alla evolutionsmekanismer som påverkar utvecklingen av organismer och dess arter. Att förstå sig på evolution innebär alltså att begripa vilka olika faktorer som kan påverka hur en population ändras över tid och hur dessa påverkar varandra. Faktorer kan vara allt från hur mycket det blåser på en klippa till vad som gynnas av det naturliga urvalet. 
+
+        p Viktiga faktorer är givetvis vilken miljö som en population befinner sig i, och dessa faktorer delas in i biotiska samt abiotiska. Dessa begrepp betyder levande kontra icke levande, alltså är biotiska faktorer saker som andra arter, hur mycket konkurrens det finns för föda, hur mycket föda som finns innan konkurrensen etc. Abiotiska faktorer är mer miljöns förhållanden mer materialistiskt. Hur mycket nederbörd? Vilken temperatur? osv.   
+
+        p Det finns flera typer av urval, men den vanligaste typen är naturligt urval, vilket innebär “survival of the fittest”, alltså att den som är bäst anpassad får överleva och föra vidare sina gener till sin avkomma. Förslag på andra typer av urval är sexuellt urval, där en individs utseende bestämmer om denne får föröka sig. t.ex en påfågel där färger och mönster avgör vilken hane som får para sig med honan.
+
+        p Det är viktigt att inse att evolution inte har ett syfte, det är bara en naturlig process som drivs av mekanismer, som i sin tur leder till att vissa mutationer gynnas och därav leder till förändring av en population
+
+        p Just vår simulation är mycket simplifierad och det är därför viktigt att inse skillnaden mellan vår och verklighetens situation. Till exempel har vi inte tagit hänsyn till majoriteten av alla abiotiska eller biotiska faktorer och vår tidsenhet dagar är inte riktigt realistisk heller. Beroende på populationsstorlek och genom variation kan det ta flera millennier.
+
+        form action="/runsimulation" method="post"
+            input type="number" placeholder='Mängd varelser i början' name="num1" /
+            input type="number" placeholder='Hur många dagar?'name="num2"/
+            input type="number" placeholder='Mat krav?'name="num3"/
+            input type="number" placeholder='Hur stor är banan?' name="num4"/
+            input type="number" placeholder='Hur mycket mat?' name="num5"/
+            select name="displaymethod"
+                option value="standard" standard 
+            input type="submit" value="submit"
+        -if result == nil 
+            p du fick inget resultat
+        -if session[:result] == "crashed"
+            p din simulation blev för stor
+        -if session[:displaymethod] = "standard"
+            -i = 0
+            -result.each do |day|
+                -i += 1
+                article.day
+                    h3 day #{i}
+                    -index = 0
+                    -while index < day.length 
+                        -color = rand(1..9)
+                        -if color == 1
+                            article.creature.pink
+                                p.stamina stamina: #{day[index][:stamina]}
+                                p.lifespan lifespan: #{day[index][:lifespan]}
+                                p.position position: #{day[index][:position]}
+                                -index += 1     
+                        - elsif color == 2
+                            article.creature.blue
+                                p.stamina stamina: #{day[index][:stamina]}
+                                p.lifespan lifespan: #{day[index][:lifespan]}
+                                p.position position: #{day[index][:position]}
+                                -index += 1   
+                        - elsif color == 3
+                            article.creature.yellow
+                                p.stamina stamina: #{day[index][:stamina]}
+                                p.lifespan lifespan: #{day[index][:lifespan]}
+                                p.position position: #{day[index][:position]}
+                                -index += 1   
+                        - elsif color == 4
+                            article.creature.green
+                                p.stamina stamina: #{day[index][:stamina]}
+                                p.lifespan lifespan: #{day[index][:lifespan]}
+                                p.position position: #{day[index][:position]}
+                                -index += 1     
+                        - elsif color == 5
+                            article.creature.red
+                                p.stamina stamina: #{day[index][:stamina]}
+                                p.lifespan lifespan: #{day[index][:lifespan]}
+                                p.position position: #{day[index][:position]}
+                                -index += 1     
+                        - elsif color == 6
+                            article.creature.purple
+                                p.stamina stamina: #{day[index][:stamina]}
+                                p.lifespan lifespan: #{day[index][:lifespan]}
+                                p.position position: #{day[index][:position]}
+                                -index += 1    
+                        - elsif color == 7
+                            article.creature.white
+                                p.stamina stamina: #{day[index][:stamina]}
+                                p.lifespan lifespan: #{day[index][:lifespan]}
+                                p.position position: #{day[index][:position]}
+                                -index += 1    
+                        - elsif color == 8
+                            article.creature.brown
+                                p.stamina stamina: #{day[index][:stamina]}
+                                p.lifespan lifespan: #{day[index][:lifespan]}
+                                p.position position: #{day[index][:position]}
+                                -index += 1    
+                        - elsif color == 9
+                            article.creature.orange
+                                p.stamina stamina: #{day[index][:stamina]}
+                                p.lifespan lifespan: #{day[index][:lifespan]}
+                                p.position position: #{day[index][:position]}
+                                -index += 1
+        -if session[:displaymethod] == "graph"
+            -resultarray = []
+            -result.each do |day|
+                -index = 0
+                -biggest_sta = 0
+                -lowest_sta = 11110
+                -average=0
+                -while index < day.length 
+                    -average += day[index][:stamina].to_i
+                    -if day[index][:stamina].to_i < lowest_sta
+                        -lowest_sta = day[index][:stamina].to_i
+                    -if day[index][:stamina].to_i  > biggest_sta
+                        -biggest_sta = day[index][:stamina] .to_i
+                    -index += 1
+
+                -average = average.to_f/day.length
+                -if lowest_sta == 11110
+                    -lowest_sta = 0
+                -resultarray.concat([average,biggest_sta,lowest_sta])
+
+            article.staplegraph 
+                -p resultarray
+                -j = 0
+                -while j < result.length
+                    graph.staples
+                        staple style="height:#{resultarray[1+j*3]*100}px; width:5vw; background-color:red; grid-area: a;" Highest stamina
+                        staple style="height:#{resultarray[0+j*3]*100}px; width:5vw; background-color:purple; grid-area: b;" Average stamina
+                        staple style="height:#{resultarray[2+j*3]*100}px; width:5vw; background-color:blue; grid-area: c;" Lowest stamina
+                    -j += 1
+
+
+        
+
+
+            
